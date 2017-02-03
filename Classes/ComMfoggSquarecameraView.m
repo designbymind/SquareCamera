@@ -500,6 +500,8 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 
       UIGestureRecognizer* gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapGesture:)];
       [self.square addGestureRecognizer:gr];
+      UIGestureRecognizer* pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(didPinchGesture:)];
+      [self.square addGestureRecognizer:pgr];
 
       // and off we go! ...
       if(![self.captureSession isRunning]){
@@ -542,6 +544,9 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
             NSLog(@"[INFO] Tap focus");
             videoCaptureDevice.focusPointOfInterest = pointOfInterest;
             videoCaptureDevice.focusMode = AVCaptureFocusModeAutoFocus;
+            if([self.proxy _hasListeners:@"onTapFocus"]){
+              [self.proxy fireEvent:@"onTapFocus"];
+            }
         }
 
         if ([videoCaptureDevice isExposurePointOfInterestSupported] &&
@@ -575,6 +580,31 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     CGPoint p = [tgr locationInView:tgr.view];
     [self setPoint:p];
 }
+
+- (void)didPinchGesture:(UIPinchGestureRecognizer*)pgr
+  {
+     const CGFloat pinchVelocityDividerFactor = 5.0f;
+     if (pgr.state == UIGestureRecognizerStateChanged){
+         NSError *error = nil;
+         if ([self.captureDevice lockForConfiguration:&error]){
+             CGFloat desiredZoomFactor = self.captureDevice.videoZoomFactor + atan2f(pgr.velocity, pinchVelocityDividerFactor);
+             CGFloat zoomFactor =  MAX(1.0, MIN(desiredZoomFactor, self.captureDevice.activeFormat.videoMaxZoomFactor));
+             self.captureDevice.videoZoomFactor = zoomFactor;
+             [self.captureDevice unlockForConfiguration];
+             if (![self.proxy _hasListeners:@"zoomFactorChange"]) {
+                 NSDictionary *event = [NSDictionary dictionaryWithObjectsAndKeys:
+                                        @(zoomFactor), @"zoomFactor",
+                                        nil];
+                 
+                 [self.proxy fireEvent:@"zoomFactorChange" withObject:event];
+                 
+             }
+             
+         } else {
+             NSLog(@"error: %@", error);
+         }
+     }
+ }
 
 - (void)teardownAVCapture
 {
