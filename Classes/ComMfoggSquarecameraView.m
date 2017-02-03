@@ -545,8 +545,12 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
             videoCaptureDevice.focusPointOfInterest = pointOfInterest;
             videoCaptureDevice.focusMode = AVCaptureFocusModeAutoFocus;
             if([self.proxy _hasListeners:@"onTapFocus"]){
-              [self.proxy fireEvent:@"onTapFocus"];
+                  NSDictionary *event = [NSDictionary dictionaryWithObjectsAndKeys:
+                                        @(pointOfInterest), @"poi",
+                                        nil];        
+              [self.proxy fireEvent:@"onTapFocus" withObject:event];
             }
+            
         }
 
         if ([videoCaptureDevice isExposurePointOfInterestSupported] &&
