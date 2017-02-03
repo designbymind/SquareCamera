@@ -544,10 +544,12 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
             NSLog(@"[INFO] Tap focus");
             videoCaptureDevice.focusPointOfInterest = pointOfInterest;
             videoCaptureDevice.focusMode = AVCaptureFocusModeAutoFocus;
+            
             if([self.proxy _hasListeners:@"onTapFocus"]){
                   NSDictionary *event = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        @(pointOfInterest), @"poi",
-                                        nil];        
+                                         [NSNumber numberWithFloat:p.x], @"x",
+                                         [NSNumber numberWithFloat:p.y], @"y",
+                                        nil];
               [self.proxy fireEvent:@"onTapFocus" withObject:event];
             }
             
@@ -587,7 +589,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 
 - (void)didPinchGesture:(UIPinchGestureRecognizer*)pgr
   {
-     const CGFloat pinchVelocityDividerFactor = 5.0f;
+     const CGFloat pinchVelocityDividerFactor = 20.0f;
      if (pgr.state == UIGestureRecognizerStateChanged){
          NSError *error = nil;
          if ([self.captureDevice lockForConfiguration:&error]){
