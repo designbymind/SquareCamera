@@ -648,7 +648,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
         if ( isCapturingStillImage ) {
           // do flash bulb like animation
           flashView = [[UIView alloc] initWithFrame:[self.stillImage frame]];
-          [flashView setBackgroundColor:[UIColor whiteColor]];
+          [flashView setBackgroundColor:[UIColor blackColor]];
           [flashView setAlpha:0.f];
 
           [self addSubview:flashView];
