@@ -20,6 +20,8 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 
 - (void) dealloc
 {
+    NSLog(@"[INFO] Dealloc Capture Module");
+    
     [self teardownAVCapture];
 
     self.prevLayer = nil;
@@ -28,6 +30,8 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     self.captureDevice = nil;
 
     RELEASE_TO_NIL(square);
+    
+    [super dealloc];
 };
 
 -(void)initializeState
@@ -87,11 +91,13 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 
 - (void)turnFlashOn:(id)args
 {
-  if([self.captureDevice lockForConfiguration:true]){
+  //if([self.captureDevice lockForConfiguration:true]){
+  if([self.captureDevice lockForConfiguration:nil]){
         if([self.captureDevice isFlashModeSupported:AVCaptureFlashModeAuto]){
             [self.captureDevice setTorchMode:AVCaptureFlashModeAuto];
             self.flashOn = YES;
-            [self.captureDevice lockForConfiguration:false];
+            //[self.captureDevice lockForConfiguration:false];
+            [self.captureDevice unlockForConfiguration];
             if([self.proxy _hasListeners:@"onFlashOn"]){
               [self.proxy fireEvent:@"onFlashOn"];
             }
@@ -101,11 +107,13 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 
 - (void)turnFlashOff:(id)args
 {
-  if([self.captureDevice lockForConfiguration:true]){
+  //if([self.captureDevice lockForConfiguration:true]){
+  if([self.captureDevice lockForConfiguration:nil]){
         if([self.captureDevice isFlashModeSupported:AVCaptureFlashModeOn]){
             [self.captureDevice setTorchMode:AVCaptureTorchModeOff];
             self.flashOn = NO;
-            [self.captureDevice lockForConfiguration:false];
+            //[self.captureDevice lockForConfiguration:false];
+            [self.captureDevice unlockForConfiguration];
             if([self.proxy _hasListeners:@"onFlashOff"]){
               [self.proxy fireEvent:@"onFlashOff"];
             }
@@ -275,6 +283,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 {
     if(self.captureSession){
         if([self.captureSession isRunning]){
+            NSLog(@"[INFO] Pause Capture Session");
             [self.captureSession stopRunning];
             if([self.proxy _hasListeners:@"stateChange"]){
               NSDictionary *event = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -409,14 +418,16 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 
       self.captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
 
-      if([self.captureDevice lockForConfiguration:true]){
+      //if([self.captureDevice lockForConfiguration:true]){
+      if([self.captureDevice lockForConfiguration:nil]){
 
                 if([self.captureDevice isFlashModeSupported:AVCaptureFlashModeOff]){
                     [self.captureDevice setFlashMode:AVCaptureFlashModeOff];
                     self.flashOn = NO;
                 };
 
-        [self.captureDevice lockForConfiguration:false];
+        //[self.captureDevice lockForConfiguration:false];
+        [self.captureDevice unlockForConfiguration];
       };
 
       // Set the default camera
@@ -615,15 +626,16 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 - (void)teardownAVCapture
 {
 
-    // NSLog(@"[INFO] TEAR DOWN CAPTURE");
+    NSLog(@"[INFO] teardownAVCapture");
 
+    if([self.captureSession isRunning]){
+        [self.captureSession stopRunning];
+    }
+    
     [self.captureSession removeInput:self.videoInput];
     [self.captureSession removeOutput:self.videoDataOutput];
 
-    [self.captureSession removeInput:self.videoInput];
-    [self.captureSession removeOutput:self.videoDataOutput];
-
-    [self.captureSession stopRunning];
+    //[self.captureSession stopRunning];
 
     NSDictionary *event = [NSDictionary dictionaryWithObjectsAndKeys:
                            @"stopped", @"state",
@@ -711,6 +723,8 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
 {
 
+  [self pause:nil];
+  
   for(AVMetadataObject *metadataObject in metadataObjects)
   {
     AVMetadataMachineReadableCodeObject *readableObject = (AVMetadataMachineReadableCodeObject *)metadataObject;
