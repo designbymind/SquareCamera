@@ -166,7 +166,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     }
 
     NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
-
+      
     UIImage *image = [[UIImage alloc] initWithData:imageData];
 
     CGSize size = image.size;  // this will be the full size of the screen
@@ -214,8 +214,10 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     [self.proxy fireEvent:@"success" withObject:event];
 
     // TEST
-    self.stillImage = nil;
-    self.stillImageOutput = nil;
+    NSData *imageData = nil;
+    UIImage *image = nil;
+    TiBlob *imageBlob = nil;
+    NSDictionary *event = nil;
       
     }];
 };
