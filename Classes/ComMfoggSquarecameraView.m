@@ -213,6 +213,10 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     // HURRAH!
     [self.proxy fireEvent:@"success" withObject:event];
 
+    // TEST
+    self.stillImage = nil;
+    self.stillImageOutput = nil;
+      
     }];
 };
 
