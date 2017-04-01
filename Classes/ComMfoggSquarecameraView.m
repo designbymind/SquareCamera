@@ -214,11 +214,13 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     [self.proxy fireEvent:@"success" withObject:event];
 
     // TEST
-    NSData *imageData = nil;
-    UIImage *image = nil;
-    TiBlob *imageBlob = nil;
-    NSDictionary *event = nil;
-      
+    imageData = nil;
+    image = nil;
+    imageBlob = nil;
+    event = nil;
+    
+    //[alertView release]
+        
     }];
 };
 
