@@ -215,8 +215,8 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 
     // Release the hounds!
     [image release];
-    [croppedImage release];
     [imageBlob release];
+    croppedImage = nil;
         
     }];
 };
