@@ -213,11 +213,10 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     // HURRAH!
     [self.proxy fireEvent:@"success" withObject:event];
 
-    // TEST
-    //[imageData release];
+    // Release the hounds!
     [image release];
+    [croppedImage release];
     [imageBlob release];
-    //[event release];
         
     }];
 };
