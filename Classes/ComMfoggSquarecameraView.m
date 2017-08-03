@@ -46,7 +46,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     // Set defaults
     self.camera = @"back"; // Default camera is 'back'
     self.frontQuality = AVCaptureSessionPresetHigh; // Default front quality is high
-    self.backQuality = AVCaptureSessionPreset1920x1080; // Default back quality is HD
+    self.backQuality = AVCaptureSessionPreset3840x2160; // Default back quality is UHD
     self.scanCropPreview = ([self.proxy valueForKey:@"scanCropPreview"] != nil) ? [[self.proxy valueForKey:@"scanCropPreview"] boolValue] : false;
     self.scanCrop = ([self.proxy valueForKey:@"scanCrop"] != nil) ? [self.proxy valueForKey:@"scanCrop"] : nil;
     self.barcodeTypes = ([self.proxy valueForKey:@"barcodeTypes"] != nil) ? [self.proxy valueForKey:@"barcodeTypes"] : @[];
@@ -277,6 +277,12 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
             break;
         case HD_QUALITY:
             return AVCaptureSessionPreset1920x1080;
+            break;
+        case PHOTO_QUALITY:
+            return AVCaptureSessionPresetPhoto;
+            break;
+        case UHD_QUALITY:
+            return AVCaptureSessionPreset3840x2160;
             break;
         default:
             return AVCaptureSessionPresetHigh;
