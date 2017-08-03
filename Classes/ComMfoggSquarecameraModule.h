@@ -28,7 +28,9 @@ NS_ENUM(NSInteger, AVSessionPresetType)
     LOW_QUALITY = 0,
     MEDIUM_QUALITY = 1,
     HIGH_QUALITY = 2,
-    HD_QUALITY = 3
+    HD_QUALITY = 3,
+    PHOTO_QUALITY = 4
+    UHD_QUALITY = 5
 };
 
 @interface ComMfoggSquarecameraModule : TiModule 
