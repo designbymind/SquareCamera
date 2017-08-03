@@ -29,7 +29,7 @@ NS_ENUM(NSInteger, AVSessionPresetType)
     MEDIUM_QUALITY = 1,
     HIGH_QUALITY = 2,
     HD_QUALITY = 3,
-    PHOTO_QUALITY = 4
+    PHOTO_QUALITY = 4,
     UHD_QUALITY = 5
 };
 
