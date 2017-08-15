@@ -700,6 +700,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 
 -(void)setDetectCodes_:(id)arg
 {
+  NSLog(@"[INFO] Run setDetectCodes_");
   self.detectCodes = [TiUtils boolValue:arg def:NO];
 }
 
