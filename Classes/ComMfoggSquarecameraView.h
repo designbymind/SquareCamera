@@ -15,7 +15,6 @@
 #import "TiUtils.h"
 #import "TiBlob.h"
 
-
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import <CoreGraphics/CoreGraphics.h>
@@ -37,8 +36,8 @@
 @property (nonatomic, strong) AVCaptureSession *captureSession;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *prevLayer;
 @property (nonatomic, assign) AVCaptureVideoOrientation *orientation;
-@property (nonatomic,retain) AVCaptureDeviceInput *videoInput;
-@property (nonatomic,retain) AVCaptureDeviceInput *audioInput;
+@property (nonatomic, retain) AVCaptureDeviceInput *videoInput;
+@property (nonatomic, retain) AVCaptureDeviceInput *audioInput;
 @property (nonatomic, retain) AVCaptureStillImageOutput *stillImageOutput;
 @property (nonatomic, retain) AVCaptureVideoDataOutput *videoDataOutput;
 @property (nonatomic, retain) UIImageView *stillImage;
