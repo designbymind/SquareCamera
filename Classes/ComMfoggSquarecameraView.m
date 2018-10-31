@@ -374,15 +374,18 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
             };
             
             // Set the focus to expect a close-range if using barcode scanning
-            // Temporarily skipping near focus until there's time to write a method of declaring/toggling focus range
-            //if (self.detectCodes && [d isAutoFocusRangeRestrictionSupported]) {
-            if ([d isAutoFocusRangeRestrictionSupported]) {
-                //NSLog(@"[INFO]: Setting the autofocus range to near!");
-                NSLog(@"[INFO]: Setting the autofocus range to none!");
+            if (self.detectCodes && [d isAutoFocusRangeRestrictionSupported]) {
+                NSLog(@"[INFO]: Setting the autofocus range to near!");
                 
                 if ([d lockForConfiguration:nil]) {
-                    //d.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestrictionNear;
-                    d.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestrictionNone;
+                    d.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestrictionNear;
+                    d.focusMode = AVCaptureFocusModeContinuousAutoFocus;
+                    [d unlockForConfiguration];
+                }
+            } else {
+                NSLog(@"[INFO]: Setting the autofocus range to near!");
+               
+                if ([d lockForConfiguration:nil]) {
                     d.focusMode = AVCaptureFocusModeContinuousAutoFocus;
                     [d unlockForConfiguration];
                 }
