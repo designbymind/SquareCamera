@@ -382,7 +382,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
                     d.focusMode = AVCaptureFocusModeContinuousAutoFocus;
                     [d unlockForConfiguration];
                 }
-            } else {
+            } else if ([d isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
                 NSLog(@"[INFO]: Setting the autofocus range to near!");
                
                 if ([d lockForConfiguration:nil]) {
