@@ -1,4 +1,4 @@
-<h1>Note: This fork removes some contributed features (eg. Code Snanning) in order to provide a lighter code-base.</h1>
+<h1>Note: This fork removes some contributed features (eg. QR/Code Scanning) in order to provide a lighter code-base.</h1>
 <h4>Please use the orginal repo for a more feature-rich build: https://github.com/mikefogg/SquareCamera</h4>
 
 Appcelerator Titanium :: SquareCamera
