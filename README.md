@@ -1,5 +1,5 @@
-<h1>Note: This fork removes some contributed features (Example: Code Snanning) in order to provide a lighter code-base.</h1>
-<h2>Please use the orginal fork for a more feature-rich build.</h2>
+<h1>Note: This fork removes some contributed features (eg. Code Snanning) in order to provide a lighter code-base.</h1>
+<h4>Please use the orginal repo for a more feature-rich build: https://github.com/mikefogg/SquareCamera</h4>
 
 Appcelerator Titanium :: SquareCamera
 
