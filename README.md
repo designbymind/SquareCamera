@@ -1,3 +1,6 @@
+<h1>Note: This fork removes some contributed features (Example: Code Snanning) in order to provide a lighter code-base.</h1>
+<h2>Please use the orginal fork for a more feature-rich build.</h2>
+
 Appcelerator Titanium :: SquareCamera
 
 An Appcelerator Titanium module that uses AVFoundation to allow for a much more customizable camera.
