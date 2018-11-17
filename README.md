@@ -1,6 +1,3 @@
-<h1>Note: This fork removes some contributed features (eg. QR/Code Scanning) in order to provide a lighter code-base.</h1>
-<h4>Please use the orginal repo for a more feature-rich build: https://github.com/mikefogg/SquareCamera</h4>
-
 Appcelerator Titanium :: SquareCamera
 
 An Appcelerator Titanium module that uses AVFoundation to allow for a much more customizable camera.
