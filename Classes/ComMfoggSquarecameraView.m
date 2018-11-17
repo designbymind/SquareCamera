@@ -173,8 +173,8 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 
     NSLog(@"image.size : %@", NSStringFromCGSize(size));
 
-    CGFloat image_width = self.stillImage.frame.size.width*2;
-    CGFloat image_height = self.stillImage.frame.size.height*2;
+    CGFloat image_width = self.stillImage.frame.size.width*4;
+    CGFloat image_height = self.stillImage.frame.size.height*4;
 
     CGRect cropRect = CGRectMake(
       0,
