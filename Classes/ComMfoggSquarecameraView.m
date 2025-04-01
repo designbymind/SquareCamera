@@ -21,7 +21,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 - (void) dealloc
 {
     NSLog(@"[INFO] Dealloc Capture Module");
-    
+
     [self teardownAVCapture];
 
     self.prevLayer = nil;
@@ -30,7 +30,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     self.captureDevice = nil;
 
     RELEASE_TO_NIL(square);
-    
+
     [super dealloc];
 };
 
@@ -166,7 +166,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     }
 
     NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
-      
+
     UIImage *image = [[UIImage alloc] initWithData:imageData];
 
     CGSize size = image.size;  // this will be the full size of the screen
@@ -217,7 +217,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     [image release];
     [imageBlob release];
     croppedImage = nil;
-        
+
     }];
 };
 
@@ -372,11 +372,11 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
                 NSLog(@"[WARN]: Can not use camera quality '%@'. Defaulting to High.", quality);
                 self.captureSession.sessionPreset = AVCaptureSessionPresetHigh;
             };
-            
+
             // Set the focus to expect a close-range if using barcode scanning
             if (self.detectCodes && [d isAutoFocusRangeRestrictionSupported]) {
                 NSLog(@"[INFO]: Setting the autofocus range to near!");
-                
+
                 if ([d lockForConfiguration:nil]) {
                     d.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestrictionNear;
                     d.focusMode = AVCaptureFocusModeContinuousAutoFocus;
@@ -384,7 +384,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
                 }
             } else if ([d isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
                 NSLog(@"[INFO]: Setting the autofocus range to near!");
-               
+
                 if ([d lockForConfiguration:nil]) {
                     d.focusMode = AVCaptureFocusModeContinuousAutoFocus;
                     [d unlockForConfiguration];
@@ -488,12 +488,19 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 
           if([self.barcodeTypes count] > 0){
               NSMutableArray *metadataOutputTypes = [NSMutableArray array];
+              NSArray *supportedTypes = metadataOutput.availableMetadataObjectTypes;
 
               for(NSString * barcode in self.barcodeTypes) {
                   if(barcode != nil){
-                      if([self.barcodeDict objectForKey:barcode] != nil){
+                      NSString *barcodeType = [self.barcodeDict objectForKey:barcode];
+                      if([self.barcodeDict objectForKey:barcode] != nil) {
+                        // fixes crash in simulator
+                        if ([supportedTypes containsObject:barcodeType]) {
                           NSLog([NSString stringWithFormat:@"Listening for barcode type: %@", barcode]);
                           [metadataOutputTypes addObject:[self.barcodeDict objectForKey:barcode]];
+                        } else {
+                            NSLog([NSString stringWithFormat:@"barcode not supported: %@", barcode]);
+                        }
                       } else {
                           NSLog([NSString stringWithFormat:@"Unknown barcode type: %@", barcode]);
                       }
@@ -503,10 +510,10 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
               }
 
               // Set these output types only
-              [metadataOutput setMetadataObjectTypes:metadataOutputTypes];
+              [metadataOutput setMetadataObjectTypes: metadataOutputTypes];
           } else {
               // Non set! Add them all :)
-              [metadataOutput setMetadataObjectTypes:@[AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode39Mod43Code, AVMetadataObjectTypeUPCECode, AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeQRCode, AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeDataMatrixCode, AVMetadataObjectTypeAztecCode]];
+              [metadataOutput setMetadataObjectTypes: metadataOutput.availableMetadataObjectTypes];
           }
 
           // Add the scanCrop after you startRunning it
@@ -573,7 +580,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
             NSLog(@"[INFO] Tap focus");
             videoCaptureDevice.focusPointOfInterest = pointOfInterest;
             videoCaptureDevice.focusMode = AVCaptureFocusModeAutoFocus;
-            
+
             if([self.proxy _hasListeners:@"onTapFocus"]){
                   NSDictionary *event = [NSDictionary dictionaryWithObjectsAndKeys:
                                          [NSNumber numberWithFloat:p.x], @"x",
@@ -581,7 +588,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
                                         nil];
               [self.proxy fireEvent:@"onTapFocus" withObject:event];
             }
-            
+
         }
 
         if ([videoCaptureDevice isExposurePointOfInterestSupported] &&
@@ -630,11 +637,11 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
                  NSDictionary *event = [NSDictionary dictionaryWithObjectsAndKeys:
                                         @(zoomFactor), @"zoomFactor",
                                         nil];
-                 
+
                  [self.proxy fireEvent:@"zoomFactorChange" withObject:event];
-                 
+
              }
-             
+
          } else {
              NSLog(@"error: %@", error);
          }
@@ -649,7 +656,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     if([self.captureSession isRunning]){
         [self.captureSession stopRunning];
     }
-    
+
     [self.captureSession removeInput:self.videoInput];
     [self.captureSession removeOutput:self.videoDataOutput];
 
@@ -743,7 +750,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 {
 
   [self pause:nil];
-  
+
   for(AVMetadataObject *metadataObject in metadataObjects)
   {
     AVMetadataMachineReadableCodeObject *readableObject = (AVMetadataMachineReadableCodeObject *)metadataObject;
